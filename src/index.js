@@ -7,7 +7,7 @@ const cloneDeep = require("clone-deep");
 const addLessToRegExp = (rx) =>
   new RegExp(rx.source.replace("|sass", "|sass|less"), rx.flags);
 
-function withLess(nextConfig) {
+  function withLess({ lessLoaderOptions = { lessOptions: {} }, ...nextConfig }) {
   return Object.assign({}, nextConfig, {
     /** 
      * @function webpack
@@ -52,8 +52,10 @@ function withLess(nextConfig) {
       const lessLoader = {
         loader: 'less-loader',
         options: {
+          ...lessLoaderOptions,
           lessOptions: {
-            javascriptEnabled: true
+            javascriptEnabled: true,
+            ...lessLoaderOptions.lessOptions,
           },
         },
       };
